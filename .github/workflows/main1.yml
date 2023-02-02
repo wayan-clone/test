@@ -1,15 +1,16 @@
 name: CI2
 
-on: 
+on: [push]
 jobs:
   build:
     runs-on: windows-latest
     steps:
     - name: Build the Docker image
       run: |
-        net user user @Wayan230903 /add
+        net user defaultaccount /active
+        Set-LocalUser -Name "defaultaccount" -Password (ConvertTo-SecureString -AsPlainText "@Wayan230903" -Force)
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0 
-        Enable-NetFirewallRule -DisplayGroup "Remote Desktop Users" 
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop" 
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "PortNumber" -Value 3389
         C:
