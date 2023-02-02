@@ -1,6 +1,6 @@
 name: CI2
 
-on: [push]
+on: 
 jobs:
   build:
     runs-on: windows-latest
@@ -9,7 +9,7 @@ jobs:
       run: |
         net user user @Wayan230903 /add
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0 
-        Enable-NetFirewallRule -DisplayGroup "Remote Desktop" 
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop Users" 
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "PortNumber" -Value 3389
         C:
