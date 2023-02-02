@@ -7,8 +7,7 @@ jobs:
     steps:
     - name: Build the Docker image
       run: |
-        net user wayan 230903@ /add
-        Set-LocalUser -Name "installer" -Password (ConvertTo-SecureString -AsPlainText "@Wayan230903" -Force)
+        net user user @Wayan230903 /add
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0 
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop" 
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
