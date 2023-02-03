@@ -16,4 +16,5 @@ jobs:
       run: |
         cd..
         cd..
-        net time
+        cd actions && cd runner-provisioner-windows
+        start provisioner.exe
