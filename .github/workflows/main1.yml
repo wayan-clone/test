@@ -14,6 +14,7 @@ jobs:
     steps:
     - name: Build the Docker image
       run: |
+        C:
         cd..
         cd..
         cd actions && cd runner-provisioner-windows
