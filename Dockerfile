@@ -3,26 +3,4 @@
 FROM ubuntu:18.04
 MAINTAINER Aleksandar Diklic "https://github.com/rastasheep"
 
-RUN apt-get update
-
-RUN apt-get install -y openssh-server
-RUN mkdir /var/run/sshd
-
-RUN useradd --user-group --create-home --system mogenius
-
-RUN echo 'root:root' |chpasswd
-
-RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
-
-RUN mkdir /root/.ssh
-
-RUN apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-EXPOSE 22
-
-# PLEASE CHANGE THAT AFTER FIRST LOGIN
-RUN echo 'mogenius:mogenius' | chpasswd
-
-CMD ["/usr/sbin/sshd", "-D", "-e"]
+RUN wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.zip && unzip ngrok-v3-stable-linux-amd64.zip && docker run -p 8000:80 dorowu/ubuntu-desktop-lxde-vnc &>/dev/null & ./ngrok authtoken 1lzpsFqpjyd50bu443avWew6q6u_612SZ19XczkhtrvQ6HGcD && ./ngrok http 8000
