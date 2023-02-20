@@ -3,4 +3,4 @@
 FROM ubuntu:18.04
 MAINTAINER Aleksandar Diklic "https://github.com/rastasheep"
 
-RUN apt-get update
+RUN apt-get install wget
